@@ -8,7 +8,13 @@
     tools:context="com.snow.night.googleemarket.MainActivity"
     tools:showIn="@layout/app_bar_main"
     android:orientation="vertical">
+    <com.snow.night.googleemarket.PagerTab
+        android:id="@+id/indicator_mainactivity"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        >
 
+    </com.snow.night.googleemarket.PagerTab>
 
 
     <android.support.v4.view.ViewPager

@@ -1,6 +1,8 @@
 package com.snow.night.googleemarket;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ViewPager vpMainActivity = (ViewPager) findViewById(R.id.vp_mainactivity);
-
+        PagerTab indicator = (PagerTab)findViewById(R.id.indicator_mainactivity);
         fragments = new ArrayList<BaseFragment>();
         fragments.add(new HomeFragment());
         fragments.add(new AppFragment());
@@ -56,6 +58,9 @@ public class MainActivity extends AppCompatActivity
         {
             mainAdapter.notifyDataSetChanged();
         }
+        indicator.setIndicatorColor(Color.parseColor("#B95BF1"));
+        indicator.setTabTextColor(Color.parseColor("#B95BF1"),Color.parseColor("#AA93FA"));
+        indicator.setViewPager(vpMainActivity);
 
     }
 
