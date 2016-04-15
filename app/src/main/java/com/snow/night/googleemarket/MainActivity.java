@@ -2,10 +2,9 @@ package com.snow.night.googleemarket;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.snow.night.googleemarket.adapter.MainAdapter;
+import com.snow.night.googleemarket.adapter.MainAdapterSelf;
 import com.snow.night.googleemarket.base.BaseFragment;
 import com.snow.night.googleemarket.fragment.AppFragment;
 import com.snow.night.googleemarket.fragment.GameFragment;
@@ -25,8 +24,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     List<BaseFragment> fragments;
-    private MainAdapter mainAdapter;
-
+    private MainAdapterSelf mainAdapter;
+    private ArrayList<Integer> positions;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity
         fragments.add(new AppFragment());
         fragments.add(new GameFragment());
         if(mainAdapter == null){
-            mainAdapter = new MainAdapter(getSupportFragmentManager(), fragments);
+            mainAdapter = new MainAdapterSelf(getSupportFragmentManager(), fragments);
             vpMainActivity.setAdapter(mainAdapter);
         }else
         {
@@ -61,7 +60,33 @@ public class MainActivity extends AppCompatActivity
         indicator.setIndicatorColor(Color.parseColor("#B95BF1"));
         indicator.setTabTextColor(Color.parseColor("#B95BF1"),Color.parseColor("#AA93FA"));
         indicator.setViewPager(vpMainActivity);
+        positions = new ArrayList<>();
+        indicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
+            }
+
+            /**
+             * 当页面被第一次选择的时候 调用网络请求数据的方法
+             * @param position
+             */
+            @Override
+            public void onPageSelected(int position) {
+                if(!positions.contains(position))
+                {
+                    BaseFragment baseFragment =fragments.get(position);
+                    baseFragment.initdata();
+                    positions.add(position);
+                }
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
