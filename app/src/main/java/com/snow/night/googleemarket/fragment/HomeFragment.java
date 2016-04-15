@@ -1,21 +1,20 @@
 package com.snow.night.googleemarket.fragment;
 
-import android.os.Bundle;
 import android.os.SystemClock;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ListView;
 
 import com.snow.night.googleemarket.R;
 import com.snow.night.googleemarket.adapter.HomeListAdapter;
 import com.snow.night.googleemarket.base.BaseFragment;
+import com.snow.night.googleemarket.bean.HomeBean;
+import com.snow.night.googleemarket.net.Urls;
+import com.snow.night.googleemarket.utils.JsonUtil;
+import com.snow.night.googleemarket.utils.LogUtil;
+import com.snow.night.googleemarket.utils.NetUtil;
 import com.snow.night.googleemarket.view.LoadMoreListView;
-import com.snow.night.googleemarket.view.StateLayout;
 
-import java.net.DatagramSocket;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/4/13.
@@ -39,7 +38,11 @@ public class HomeFragment extends BaseFragment {
 
     int count = 1;
     @Override
-    protected void onPostExecute(int requestType, Object o) {
+    protected void onPostExecute(int requestType, Object result) {
+
+//        HomeBean homeBean = JsonUtil.json2Bean((String) result, HomeBean.class);
+
+        LogUtil.e(this,result+"result");
         ArrayList<String> datas = null;
         switch (requestType){
             case REQUEST_INIT_DATA:
@@ -87,14 +90,15 @@ public class HomeFragment extends BaseFragment {
         SystemClock.sleep(3000);
         switch (requestType){
             case REQUEST_INIT_DATA:
-
-                break;
             case REQUEST_LOADING_DATA:
-
-                break;
+                  //http://127.0.0.1:8090/home?index=0
+                HashMap<String,String> params = new HashMap<String,String>();
+//                params.put("index",homeListAdapter.getData().size()+"");  //有时空指针
+                params.put("index",homeListAdapter.getData().size()+"");
+                   String json = NetUtil.getjson(Urls.HOME,params);
+               return json;
 
         }
-
         return null;
     }
 

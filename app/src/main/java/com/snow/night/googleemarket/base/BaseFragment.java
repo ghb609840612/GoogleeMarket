@@ -126,7 +126,7 @@ public abstract class BaseFragment extends Fragment {
     /**
      *    联网之后更新Ui的操作
      */
-    protected abstract void onPostExecute(int requestType, Object o);
+    protected abstract void onPostExecute(int requestType, Object result);
     /**
      *   具体的子线程的联网操作
      */
