@@ -41,7 +41,8 @@ public abstract  class MyBaseAdapter<T> extends BaseAdapter{
     }
 
 //    public View getView(int position, View convertView, ViewGroup parent) {
-//        if(convertView == null)
+//
+// if(convertView == null)
 //        {
 //            convertView = View.inflate(parent.getContext(),
 //                    android.R.layout.simple_expandable_list_item_1,null);
@@ -55,21 +56,21 @@ public abstract  class MyBaseAdapter<T> extends BaseAdapter{
 //        viewHolder.tv.setText(data);
 //        return convertView;
 //    }
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//       Object viewHolder;
-//        if(convertView == null)
-//        {
-//            convertView = View.inflate(parent.getContext(),
-//                    getLayoutResId(position),null);
-//            viewHolder = createHolder(convertView,position);
-//            convertView.setTag(viewHolder);
-//        }else{
-//            viewHolder = convertView.getTag();
-//        }
-//        T data =datas.get(position);
-//       showdata(position,viewHolder,data);
-//        return convertView;
-//    }
+    public View getView(int position, View convertView, ViewGroup parent) {
+       Object viewHolder;
+        if(convertView == null)
+        {
+            convertView = View.inflate(parent.getContext(),
+                    getLayoutResId(position),null);
+            viewHolder = createHolder(convertView,position);
+            convertView.setTag(viewHolder);
+        }else{
+            viewHolder = convertView.getTag();
+        }
+        T data =datas.get(position);
+       showdata(position,viewHolder,data);
+        return convertView;
+    }
 
     protected abstract int getLayoutResId(int position);
     protected abstract Object createHolder(View convertView, int position);

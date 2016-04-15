@@ -87,13 +87,13 @@ public class NetUtil {
      * @return
      */
     private static String getJsonFromNet(String requestUrl) {
-        String json="haha";
+        String json;
         HttpHelper.HttpResult httpResult = HttpHelper.get(requestUrl);
         if(httpResult!= null){
             json = httpResult.getString();
             saveJson2Local(json,requestUrl);
 //            LogUtil.e(NetUtil.class ,json);
-            return  json;
+            return  httpResult.getString();
         }
 
         return null;

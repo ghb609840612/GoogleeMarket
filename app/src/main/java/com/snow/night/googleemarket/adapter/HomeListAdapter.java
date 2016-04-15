@@ -20,7 +20,7 @@ public class HomeListAdapter extends MyBaseAdapter<String>{
         super(datas);
     }
 
-
+/*
         private  ViewHolder viewHolder;
         public View getView(int position, View convertView, ViewGroup parent) {
         if(convertView == null)
@@ -36,7 +36,7 @@ public class HomeListAdapter extends MyBaseAdapter<String>{
         String data =datas.get(position);
        viewHolder.tv.setText(data);
         return convertView;
-    }
+    }*/
     @Override
     public int getLayoutResId(int position) {
         return android.R.layout.simple_expandable_list_item_1;

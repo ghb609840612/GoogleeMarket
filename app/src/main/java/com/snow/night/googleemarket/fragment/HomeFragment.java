@@ -43,6 +43,7 @@ public class HomeFragment extends BaseFragment {
 //        HomeBean homeBean = JsonUtil.json2Bean((String) result, HomeBean.class);
 
         LogUtil.e(this,result+"result");
+       // LogUtil.e(121113,homeBean+"homeBeankkk");
         ArrayList<String> datas = null;
         switch (requestType){
             case REQUEST_INIT_DATA:
@@ -96,6 +97,7 @@ public class HomeFragment extends BaseFragment {
 //                params.put("index",homeListAdapter.getData().size()+"");  //有时空指针
                 params.put("index",homeListAdapter.getData().size()+"");
                    String json = NetUtil.getjson(Urls.HOME,params);
+                   LogUtil.e(this,json);
                return json;
 
         }
