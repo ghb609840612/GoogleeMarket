@@ -26,6 +26,11 @@ public class HomeFragment extends BaseFragment {
     private LoadMoreListView listView;
 
     @Override
+    public String getTitle() {
+        return "首页";
+    }
+
+    @Override
     public View getContentView() {
         return null;
     }
@@ -40,20 +45,22 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void onPostExecute(int requestType, Object result) {
 
-//        HomeBean homeBean = JsonUtil.json2Bean((String) result, HomeBean.class);
-
-        LogUtil.e(this,result+"result");
-       // LogUtil.e(121113,homeBean+"homeBeankkk");
-        ArrayList<String> datas = null;
+         HomeBean homeBean = JsonUtil.json2Bean((String) result, HomeBean.class);
+        ArrayList<HomeBean.Appinfo> datas = null;
+        if(homeBean!= null)
+        {
+            datas = homeBean.list;
+        }
         switch (requestType){
             case REQUEST_INIT_DATA:
                 //模拟数据
-                 datas = new ArrayList<String>();
-                for(int i=0; i< 20;i++){
-                    datas.add("~_~猴子来了"+i+"次~_~");
-                }
+//                 datas = new ArrayList<String>();
+//                for(int i=0; i< 20;i++){
+//                    datas.add("~_~猴子来了"+i+"次~_~");
+//                }
+                rootview.showContentview();
                 if(checkDataIsShowStateView(datas)){
-                    rootview.showContentview();
+
                     homeListAdapter.getData().addAll(datas);
                     homeListAdapter.notifyDataSetChanged();
                 }
@@ -61,20 +68,20 @@ public class HomeFragment extends BaseFragment {
             case REQUEST_LOADING_DATA:
 
                 //模拟数据 根据count的不同值 赋予datas不同数据 达到加载的不同状态（没有数据、加载失败、没有更多,成功加载到数据）
-                if(count == 1)                              //成功加载到数据
-                {
-                    datas = new ArrayList<String>();
-                    datas.add("猴子请来的救兵");
-                }else if(count == 2){                       //加载失败
-                     datas = null;
-                }else if(count == 3){                       //点击重试之后的数据
-                    datas = new ArrayList<String>();
-                    datas.add("这救兵太弱了");
-                }else{                                      //没有更多数据
-                    datas = new ArrayList<String>();
-                }
-                count++;
-                listView.onCompleteLoadingMore();
+//                if(count == 1)                              //成功加载到数据
+//                {
+//                    datas = new ArrayList<String>();
+//                    datas.add("猴子请来的救兵");
+//                }else if(count == 2){                       //加载失败
+//                     datas = null;
+//                }else if(count == 3){                       //点击重试之后的数据
+//                    datas = new ArrayList<String>();
+//                    datas.add("这救兵太弱了");
+//                }else{                                      //没有更多数据
+//                    datas = new ArrayList<String>();
+//                }
+//                count++;
+//                listView.onCompleteLoadingMore();
                 //实际开发中根据服务器返回的datas的数据状态进行footerview的显示
                 //每个页面去加载数据都要对返回的数据进行判断
                 // 只有数据是Ok的情况下 我们才展示我们自己的页面 所有对判断操作进行抽取

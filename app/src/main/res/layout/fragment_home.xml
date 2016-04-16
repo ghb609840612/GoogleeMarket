@@ -7,5 +7,9 @@
     <com.snow.night.googleemarket.view.LoadMoreListView
         android:id="@+id/lv_fragment_home"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.snow.night.googleemarket.view.LoadMoreListView>
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent">
+
+    </com.snow.night.googleemarket.view.LoadMoreListView>
 </LinearLayout>

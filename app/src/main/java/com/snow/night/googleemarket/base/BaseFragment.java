@@ -36,15 +36,13 @@ public abstract class BaseFragment extends Fragment {
         context =getActivity();
         rootview = new StateLayout(context);
 
-
+        View contentview = getContentView();
         if(getContentView()!= null)
         {
             rootview.setContentView(getContentView());
         }else{
             rootview.setContentView(getContentViewById());
         }
-
-
         initview();
 //        initdata();
         initlistener();

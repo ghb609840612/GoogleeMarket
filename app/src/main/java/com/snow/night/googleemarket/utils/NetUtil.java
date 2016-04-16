@@ -31,17 +31,15 @@ public class NetUtil {
     public static String getjson(String url, HashMap<String, String> params) {
         //拼接URl和params
      String requestUrl = createRequestUrl(url,params);
-        LogUtil.e(NetUtil.class,requestUrl);
 
      String json = getJsonFromLocal(requestUrl);
-     if(TextUtils.isEmpty(json)){
+
+   if(TextUtils.isEmpty(json)){
          json = getJsonFromNet(requestUrl);
-         LogUtil.e(NetUtil.class,json);
-     }else{
-         LogUtil.e(NetUtil.class,"ben di shuju");
-     }
-
-
+    }else{
+       LogUtil.e(NetUtil.class,"本地数据");
+   }
+        LogUtil.e(NetUtil.class,json);
         return  json;
     }
 
@@ -80,22 +78,20 @@ public class NetUtil {
         return null;
     }
 
-
     /**
      * 根据给定的请求地址从网络获取数据
      * @param requestUrl
      * @return
      */
     private static String getJsonFromNet(String requestUrl) {
-        String json;
+
         HttpHelper.HttpResult httpResult = HttpHelper.get(requestUrl);
         if(httpResult!= null){
-            json = httpResult.getString();
-            saveJson2Local(json,requestUrl);
+            String json = httpResult.getString();
+//            saveJson2Local(json,requestUrl);
 //            LogUtil.e(NetUtil.class ,json);
-            return  httpResult.getString();
+            return  json;
         }
-
         return null;
     }
 

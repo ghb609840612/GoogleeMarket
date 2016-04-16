@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#B95BF1</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorTextfor">#FFFFFF</color>
+    <color name="gray">#666666</color>
+    <color name="selfblue">#41A6FF</color>
 
 </resources>

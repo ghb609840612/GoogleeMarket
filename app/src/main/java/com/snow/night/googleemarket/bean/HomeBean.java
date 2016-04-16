@@ -6,10 +6,10 @@ import java.util.ArrayList;
  * Created by Administrator on 2016/4/15.
  */
 public class HomeBean {
-    private ArrayList<String> picture;
-    private ArrayList<Appinfo> list;
+    public ArrayList<String> picture;
+    public ArrayList<Appinfo> list;
 
-    private class Appinfo{
+    public class Appinfo{
         private String id;
         private String name;
         private String packageName;
@@ -83,7 +83,7 @@ public class HomeBean {
             this.des = des;
         }
 
-        public Appinfo(String id, String name, String packageName, String iconUrl, float stars, long size, String downloadUrl, String des) {
+        public  Appinfo(String id, String name, String packageName, String iconUrl, float stars, long size, String downloadUrl, String des) {
             this.id = id;
             this.name = name;
             this.packageName = packageName;
