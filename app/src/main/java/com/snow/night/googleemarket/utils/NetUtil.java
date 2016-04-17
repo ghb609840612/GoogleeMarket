@@ -147,20 +147,27 @@ public class NetUtil {
      */
     private static String createRequestUrl(String url, HashMap<String, String> params) {
         //取出set集合中的keyset键值对
-        Set<String> keySet = params.keySet();
-        //由于键值对是无序的 但我们的请求路径是有序的 而且保存文件时
-        // 也需要路径来命名 如果路径名不唯一 将会取不到缓冲数据 将keyset转换成arraylist
-        ArrayList<String>  keys = new ArrayList(keySet);
-        //然后通过collection工具类对 keys 进行排序
-        Collections.sort(keys);
-        //index=0&name=zs&age=45
-        StringBuffer sb = new StringBuffer();
-        for (String key: keys) {
-            sb.append("&").append(key).append("=").append(params.get(key));
-        }
-        sb.deleteCharAt(0);
+        String requesturl;
+        if(params != null){
 
-        String requesturl = url + "?" +sb.toString();
+            Set<String> keySet = params.keySet();
+            //由于键值对是无序的 但我们的请求路径是有序的 而且保存文件时
+            // 也需要路径来命名 如果路径名不唯一 将会取不到缓冲数据 将keyset转换成arraylist
+            ArrayList<String>  keys = new ArrayList(keySet);
+            //然后通过collection工具类对 keys 进行排序
+            Collections.sort(keys);
+            //index=0&name=zs&age=45
+            StringBuffer sb = new StringBuffer();
+            for (String key: keys) {
+                sb.append("&").append(key).append("=").append(params.get(key));
+            }
+            sb.deleteCharAt(0);
+
+           requesturl = url + "?" +sb.toString();
+        }else{
+            requesturl= url;
+        }
+
         return  requesturl;
     }
 }
