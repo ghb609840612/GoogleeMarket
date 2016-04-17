@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/list_item_bg_normal">
+
+            <com.snow.night.googleemarket.view.SubjectImagview
+                android:id="@+id/iv_subject_pic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:src="@drawable/recommend_01"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="10dp"/>
+            <TextView
+                android:id="@+id/tv_subject_desc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="一周游戏精选"
+                android:textSize="20sp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="8dp"
+
+                />
+
+        </LinearLayout>
+</LinearLayout>

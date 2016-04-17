@@ -4,6 +4,8 @@ import android.app.Application;
 import android.content.Context;
 import android.os.Handler;
 
+import org.xutils.x;
+
 /**
  * Created by Administrator on 2016/4/15.
  */
@@ -15,7 +17,7 @@ public class MyApplication extends Application{
         @Override
         public void onCreate() {
             super.onCreate();
-
+            x.Ext.init(this);
             context = getApplicationContext();
             mainHanlder = new Handler();
             myTid = android.os.Process.myTid();//OS给线程的id

@@ -7,7 +7,7 @@
             android:pivotX="50%"
             android:pivotY="50%"
             android:toDegrees="360"
-            android:drawable="@drawable/spinner_big_outer"
+            android:drawable="@drawable/spinner_big_inner"
            />
     </item>
     <item >
@@ -16,7 +16,7 @@
             android:pivotX="50%"
             android:pivotY="50%"
             android:toDegrees="0"
-            android:drawable="@drawable/spinner_big_inner"
+            android:drawable="@drawable/spinner_big_outer"
             />
     </item>
 

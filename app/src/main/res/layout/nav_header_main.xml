@@ -16,19 +16,20 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@mipmap/ic_launcher1" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Google Market"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:textColor="#000000" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="www.nightsnow.com" />
+        android:text="www.nightsnow.com"
+        android:textColor="#aa000000"/>
 
 </LinearLayout>

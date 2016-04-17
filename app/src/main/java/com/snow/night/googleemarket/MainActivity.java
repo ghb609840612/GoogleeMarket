@@ -15,8 +15,12 @@ import android.view.MenuItem;
 import com.snow.night.googleemarket.adapter.MainAdapterSelf;
 import com.snow.night.googleemarket.base.BaseFragment;
 import com.snow.night.googleemarket.fragment.AppFragment;
+import com.snow.night.googleemarket.fragment.CatogaryFragment;
 import com.snow.night.googleemarket.fragment.GameFragment;
 import com.snow.night.googleemarket.fragment.HomeFragment;
+import com.snow.night.googleemarket.fragment.HotFragment;
+import com.snow.night.googleemarket.fragment.SubjectFragment;
+import com.snow.night.googleemarket.fragment.TopFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +44,8 @@ public class MainActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-        toolbar.setNavigationIcon(R.mipmap.ic_launcher);
+        toolbar.setNavigationIcon(R.mipmap.ic_launcher1);
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -50,6 +55,10 @@ public class MainActivity extends AppCompatActivity
         fragments.add(new HomeFragment());
         fragments.add(new AppFragment());
         fragments.add(new GameFragment());
+        fragments.add(new CatogaryFragment());
+        fragments.add(new HotFragment());
+        fragments.add(new TopFragment());
+
         if(mainAdapter == null){
             mainAdapter = new MainAdapterSelf(getSupportFragmentManager(), fragments);
             vpMainActivity.setAdapter(mainAdapter);
@@ -77,6 +86,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     BaseFragment baseFragment =fragments.get(position);
                     baseFragment.initdata();
+
                     positions.add(position);
                 }
 

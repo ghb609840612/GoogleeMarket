@@ -3,31 +3,34 @@ package com.snow.night.googleemarket.fragment;
 import android.os.SystemClock;
 import android.view.View;
 
+import com.google.gson.reflect.TypeToken;
 import com.snow.night.googleemarket.R;
 import com.snow.night.googleemarket.adapter.HomeListAdapter;
+import com.snow.night.googleemarket.adapter.SubjectListAdapter;
 import com.snow.night.googleemarket.base.BaseFragment;
 import com.snow.night.googleemarket.bean.HomeBean;
+import com.snow.night.googleemarket.bean.SubjectBean;
 import com.snow.night.googleemarket.net.Urls;
 import com.snow.night.googleemarket.utils.JsonUtil;
 import com.snow.night.googleemarket.utils.LogUtil;
 import com.snow.night.googleemarket.utils.NetUtil;
 import com.snow.night.googleemarket.view.LoadMoreListView;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  * Created by Administrator on 2016/4/13.
  */
-public class HomeFragment extends BaseFragment {
+public class SubjectFragment extends BaseFragment {
 
-
-    private HomeListAdapter homeListAdapter;
     private LoadMoreListView listView;
+    private SubjectListAdapter subjectListAdapter;
 
     @Override
     public String getTitle() {
-        return "首页";
+        return "主题";
     }
 
     @Override
@@ -45,12 +48,11 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void onPostExecute(int requestType, Object result) {
 
-         HomeBean homeBean = JsonUtil.json2Bean((String) result, HomeBean.class);
-        ArrayList<HomeBean.Appinfo> datas = null;
-        if(homeBean!= null)
-        {
-            datas = homeBean.list;
-        }
+
+        Type type = new TypeToken<ArrayList<SubjectBean>>(){}.getType();
+        ArrayList<SubjectBean> datas = JsonUtil.json2Bean((String) result, type);
+
+
         switch (requestType){
             case REQUEST_INIT_DATA:
                 //模拟数据
@@ -61,8 +63,8 @@ public class HomeFragment extends BaseFragment {
                 rootview.showContentview();
                 if(checkDataIsShowStateView(datas)){
 
-                    homeListAdapter.getData().addAll(datas);
-                    homeListAdapter.notifyDataSetChanged();
+                    subjectListAdapter.getData().addAll(datas);
+                    subjectListAdapter.notifyDataSetChanged();
                 }
                 break;
             case REQUEST_LOADING_DATA:
@@ -86,8 +88,8 @@ public class HomeFragment extends BaseFragment {
                 //每个页面去加载数据都要对返回的数据进行判断
                 // 只有数据是Ok的情况下 我们才展示我们自己的页面 所有对判断操作进行抽取
                 if(checkDataIsLoadingMore(datas,listView)){
-                    homeListAdapter.getData().addAll(datas);
-                    homeListAdapter.notifyDataSetChanged();
+                    subjectListAdapter.getData().addAll(datas);
+                    subjectListAdapter.notifyDataSetChanged();
                 }
                 break;
         }
@@ -99,13 +101,13 @@ public class HomeFragment extends BaseFragment {
         switch (requestType){
             case REQUEST_INIT_DATA:
             case REQUEST_LOADING_DATA:
-                  //http://127.0.0.1:8090/home?index=0
+                //http://127.0.0.1:8090/home?index=0
                 HashMap<String,String> params = new HashMap<String,String>();
 //                params.put("index",homeListAdapter.getData().size()+"");  //有时空指针
-                params.put("index",homeListAdapter.getData().size()+"");
-                   String json = NetUtil.getjson(Urls.HOME,params);
-                   LogUtil.e(this,json);
-               return json;
+                params.put("index",subjectListAdapter.getData().size()+"");
+                String json = NetUtil.getjson(Urls.SUBJECT,params);
+                LogUtil.e(this,json);
+                return json;
 
         }
         return null;
@@ -114,12 +116,13 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void initview() {
         listView = findView(R.id.lv_fragment_home);
-        if(homeListAdapter == null){
-            homeListAdapter = new HomeListAdapter(null);
-            listView.setAdapter(homeListAdapter);
+        if(subjectListAdapter == null){
+            subjectListAdapter = new SubjectListAdapter(null);
+            listView.setAdapter(subjectListAdapter);
         }else{
-            homeListAdapter.notifyDataSetChanged();
+            subjectListAdapter.notifyDataSetChanged();
         }
+
 
     }
     @Override
@@ -128,17 +131,17 @@ public class HomeFragment extends BaseFragment {
     }
     @Override
     public void initlistener() {
-       listView.setonLoadingMoreListener(new LoadMoreListView.OnLoadingMoreListener() {
-           @Override
-           public void onLoadingMore() {
-               requestAsyncTask(REQUEST_LOADING_DATA);
-           }
+        listView.setonLoadingMoreListener(new LoadMoreListView.OnLoadingMoreListener() {
+            @Override
+            public void onLoadingMore() {
+                requestAsyncTask(REQUEST_LOADING_DATA);
+            }
 
-           @Override
-           public void onRetry() {
-               requestAsyncTask(REQUEST_LOADING_DATA);
-           }
-       });
+            @Override
+            public void onRetry() {
+                requestAsyncTask(REQUEST_LOADING_DATA);
+            }
+        });
     }
 
 

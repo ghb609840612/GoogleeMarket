@@ -2,8 +2,6 @@ package com.snow.night.googleemarket.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -12,19 +10,22 @@ import android.widget.TextView;
 import com.snow.night.googleemarket.R;
 import com.snow.night.googleemarket.base.MyBaseAdapter;
 import com.snow.night.googleemarket.bean.HomeBean;
+import com.snow.night.googleemarket.bean.SubjectBean;
 import com.snow.night.googleemarket.net.Urls;
+import com.snow.night.googleemarket.utils.LogUtil;
 
+import org.xutils.common.util.DensityUtil;
+import org.xutils.image.ImageOptions;
 import org.xutils.x;
 
 import java.util.ArrayList;
-import java.util.Formatter;
 
 /**
  * Created by Administrator on 2016/4/14.
  */
-public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
+public class SubjectListAdapter extends MyBaseAdapter<SubjectBean>{
 
-    public HomeListAdapter(ArrayList<HomeBean.Appinfo> datas) {
+    public SubjectListAdapter(ArrayList<SubjectBean> datas) {
         super(datas);
     }
 /*
@@ -46,40 +47,42 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
     }*/
     @Override
     public int getLayoutResId(int position) {
-        return R.layout.item_homefragment_applist;
+        return R.layout.item_subject_adapter;
     }
 
     @Override
     public Object createHolder(View convertView, int position) {
         ViewHolder viewHolder = new ViewHolder();
-        viewHolder.tv_title = (TextView) convertView.findViewById(R.id.tv_homefragment_item_title);
-        viewHolder.tv_size = (TextView) convertView.findViewById(R.id.tv_homefragment_item_size);
-        viewHolder.tv_desc = (TextView) convertView.findViewById(R.id.tv_homefragment_item_desc);
-        viewHolder.iv_icon= (ImageView) convertView.findViewById(R.id.iv_homefragment_listitem_icon);
-        viewHolder.rb_rating = (RatingBar) convertView.findViewById(R.id.rb_homefragment_item_rating);
-        viewHolder.ll_download = (LinearLayout) convertView.findViewById(R.id.ll_homefragment_item_download);
+
+        viewHolder.tv_desc = (TextView) convertView.findViewById(R.id.tv_subject_desc);
+        viewHolder.iv_photo= (ImageView) convertView.findViewById(R.id.iv_subject_pic);
+
         return viewHolder;
     }
 
     @Override
-    protected void showdata(int position, Object viewHolder, HomeBean.Appinfo data) {
+    protected void showdata(int position, Object viewHolder, SubjectBean data) {
         ViewHolder holder = (ViewHolder) viewHolder;
-        Context context = ((ViewHolder) viewHolder).tv_title.getContext();
-        String url = Urls.IMAGE + "?name="+data.getIconUrl();
-        x.image().bind(((ViewHolder) viewHolder).iv_icon,url);
-        holder.tv_title.setText(data.getName());
-        holder.tv_size.setText(android.text.format.Formatter.formatFileSize(context,data.getSize()));
+
+        ImageOptions imageOptions = new ImageOptions.Builder()
+                .setSize(DensityUtil.dip2px(280), DensityUtil.dip2px(120))//图片大小
+                .setRadius(DensityUtil.dip2px(5))//ImageView圆角半径
+                .setCrop(true)// 如果ImageView的大小不是定义为wrap_content, 不要crop.
+                .setImageScaleType(ImageView.ScaleType.CENTER_CROP)
+                .setLoadingDrawableId(R.drawable.ic_default)//加载中默认显示图片
+                .setFailureDrawableId(R.drawable.ic_default)//加载失败后默认显示图片
+                .build();
+        String url = Urls.IMAGE + "?name="+data.getUrl();
+        x.image().bind(((ViewHolder) viewHolder).iv_photo,url);
         holder.tv_desc.setText(data.getDes());
-        holder.rb_rating.setRating(data.getStars());
     }
 
 
+
+
     static class ViewHolder{
-        TextView tv_title;
-        TextView tv_size;
+       ImageView iv_photo;
         TextView tv_desc;
-        ImageView iv_icon;
-        RatingBar rb_rating;
-        LinearLayout ll_download;
+
     }
 }
