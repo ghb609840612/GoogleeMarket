@@ -4,6 +4,7 @@ package com.snow.night.googleemarket.adapter;
 import android.graphics.Color;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.snow.night.googleemarket.MyApplication;
 import com.snow.night.googleemarket.stellar.StellarMap;
@@ -33,7 +34,7 @@ public class StellerMapAdapter  implements StellarMap.Adapter {
 
     @Override
     public View getView(int group, int position, View convertView) {
-        TextView textView = new TextView(MyApplication.getContext());
+        final TextView textView = new TextView(MyApplication.getContext());
         textView.setText(datas.get(position));
         float sizes =10 + random.nextInt(20);
         textView.setTextSize(sizes);
@@ -42,6 +43,12 @@ public class StellerMapAdapter  implements StellarMap.Adapter {
         int blue= 30+ random.nextInt(180);
         int color = Color.rgb(red,green,blue);
         textView.setTextColor(color);
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),textView.getText(),Toast.LENGTH_SHORT).show();
+            }
+        });
         return textView;
     }
 
