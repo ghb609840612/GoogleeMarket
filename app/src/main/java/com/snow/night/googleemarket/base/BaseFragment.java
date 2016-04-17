@@ -24,18 +24,15 @@ public abstract class BaseFragment extends Fragment {
         //处理共同操作
         //提供代码规范
         //提供一些常用的变量和常用的方法 避免代码重复
-
     protected Activity context;
     protected StateLayout rootview;
     protected  final int REQUEST_INIT_DATA = 80 ;
     protected  final int REQUEST_LOADING_DATA = 90 ;
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         context =getActivity();
         rootview = new StateLayout(context);
-
         View contentview = getContentView();
         if(getContentView()!= null)
         {
@@ -46,17 +43,12 @@ public abstract class BaseFragment extends Fragment {
         initview();
 //        initdata();
         initlistener();
-
-
     return rootview;
 }
-
-
     public String getTitle(){
         return  getClass().getSimpleName();
     }
     //base类中提供一些常用的方法
-
     /**
      * 为了省略强转操作
      * @param id
@@ -68,7 +60,6 @@ public abstract class BaseFragment extends Fragment {
         T view = (T) rootview.findViewById(id);
         return  view;
     }
-
     /**
      * 开启子线程进行耗时的操作
      * @param requestType
@@ -79,7 +70,6 @@ public abstract class BaseFragment extends Fragment {
                 protected Object doInBackground(Void... params) {
                     return BaseFragment.this.doInBackground(requestType);
                 }
-
                 @Override
                 protected void onPostExecute(Object o) {
                    BaseFragment.this.onPostExecute(requestType,o);
@@ -103,7 +93,6 @@ public abstract class BaseFragment extends Fragment {
         }
         return  false;
     }
-
     /**
      * 检查返回来的数据是否满足加载更多
      * @param datas
@@ -130,12 +119,10 @@ public abstract class BaseFragment extends Fragment {
      */
     protected abstract Object doInBackground(int requestType);
 
-
     /**
      * 初始化界面
      */
     public abstract  void initview();
-
     /**
      * 初始化数据
      */
