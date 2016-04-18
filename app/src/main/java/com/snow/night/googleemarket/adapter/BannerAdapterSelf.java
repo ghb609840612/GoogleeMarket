@@ -19,10 +19,10 @@ import java.util.ArrayList;
 /**
  * Created by Administrator on 2016/4/17.
  */
-public class BannerAdapter extends PagerAdapter{
+public class BannerAdapterSelf extends PagerAdapter{
     private ArrayList<String>  imageUrls ;
     private ArrayList<ImageView>  picViews = new ArrayList<ImageView>() ;
-    public BannerAdapter(ArrayList<String> imageUrls) {
+    public BannerAdapterSelf(ArrayList<String> imageUrls) {
         this.imageUrls = imageUrls;
         for (String imageUrl: imageUrls) {
             ImageView imageView = new ImageView(MyApplication.getContext());

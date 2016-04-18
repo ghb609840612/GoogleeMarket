@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 
 import com.snow.night.googleemarket.MyApplication;
 import com.snow.night.googleemarket.R;
-import com.snow.night.googleemarket.adapter.BannerAdapter;
+import com.snow.night.googleemarket.adapter.BannerAdapterSelf;
 import com.snow.night.googleemarket.adapter.HomeListAdapter;
 import com.snow.night.googleemarket.base.BaseFragment;
 import com.snow.night.googleemarket.bean.HomeBean;
@@ -107,7 +107,7 @@ public class HomeFragment extends BaseFragment {
         }
         //默认选中第一个点
         llBannerDots.getChildAt(0).setSelected(true);
-        bannerViewPager.setAdapter(new BannerAdapter(pictures));
+        bannerViewPager.setAdapter(new BannerAdapterSelf(pictures));
         bannerViewPager.setCurrentItem(bannerViewPager.getAdapter().getCount()/2);
         handler.sendEmptyMessageDelayed(SWITCHBANNER,3000);
     }
@@ -168,7 +168,6 @@ public class HomeFragment extends BaseFragment {
                  }
              }
          }
-
          @Override
          public void onPageScrollStateChanged(int state) {
 
