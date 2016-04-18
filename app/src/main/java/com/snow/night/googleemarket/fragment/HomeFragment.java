@@ -1,16 +1,20 @@
 package com.snow.night.googleemarket.fragment;
 
+import android.os.Handler;
+import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.snow.night.googleemarket.MyApplication;
 import com.snow.night.googleemarket.R;
 import com.snow.night.googleemarket.adapter.BannerAdapter;
 import com.snow.night.googleemarket.adapter.HomeListAdapter;
 import com.snow.night.googleemarket.base.BaseFragment;
 import com.snow.night.googleemarket.bean.HomeBean;
 import com.snow.night.googleemarket.net.Urls;
+import com.snow.night.googleemarket.utils.CommonUtils;
 import com.snow.night.googleemarket.utils.JsonUtil;
 import com.snow.night.googleemarket.utils.LogUtil;
 import com.snow.night.googleemarket.utils.NetUtil;
@@ -24,9 +28,30 @@ import java.util.HashMap;
  */
 public class HomeFragment extends BaseFragment {
 
+    private static final int SWITCHBANNER = 100;
     private HomeListAdapter homeListAdapter ;
     private LoadMoreListView listView;
     private ViewPager bannerViewPager;
+    private LinearLayout llBannerDots;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case SWITCHBANNER:
+                    switchPager ();
+                    break ;
+            }
+        }
+    };
+
+    private void switchPager() {
+        int currentItem = bannerViewPager.getCurrentItem();
+        currentItem++;
+        bannerViewPager.setCurrentItem(currentItem);
+        //发消息前先取消之前的消息
+        handler.removeMessages(SWITCHBANNER);
+        handler.sendEmptyMessageDelayed(SWITCHBANNER,3000);
+    }
 
     @Override
     public String getTitle() {
@@ -71,7 +96,20 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void showbanner(ArrayList<String> pictures) {
+        for(int i=0; i<pictures.size();i++){
+          View view = new View(MyApplication.getContext());
+            int size = CommonUtils.dip2px(5);
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(size,size);
+            params.leftMargin = size;
+            view.setLayoutParams(params);
+            view.setBackgroundResource(R.drawable.dot_selector);
+            llBannerDots.addView(view);
+        }
+        //默认选中第一个点
+        llBannerDots.getChildAt(0).setSelected(true);
         bannerViewPager.setAdapter(new BannerAdapter(pictures));
+        bannerViewPager.setCurrentItem(bannerViewPager.getAdapter().getCount()/2);
+        handler.sendEmptyMessageDelayed(SWITCHBANNER,3000);
     }
 
     @Override
@@ -110,9 +148,32 @@ public class HomeFragment extends BaseFragment {
 
         View headerview = View.inflate(context,R.layout.headview_homefragment_item,null);
         bannerViewPager = (ViewPager) headerview.findViewById(R.id.vp_banner_viewpager);
-        LinearLayout llBannerDots = (LinearLayout) headerview.findViewById(R.id.ll_banner_dots);
+        llBannerDots = (LinearLayout) headerview.findViewById(R.id.ll_banner_dots);
+        bannerViewPager.addOnPageChangeListener(new MypagerchangeListener());
         listView.addHeaderView(headerview);
     }
+     public class MypagerchangeListener implements ViewPager.OnPageChangeListener{
+         @Override
+         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+         }
+
+         @Override
+         public void onPageSelected(int position) {
+             position = position % llBannerDots.getChildCount();
+            llBannerDots.getChildAt(position).setSelected(true);
+             for(int i =0; i< llBannerDots.getChildCount(); i++){
+                 if(i != position){
+                     llBannerDots.getChildAt(i).setSelected(false);
+                 }
+             }
+         }
+
+         @Override
+         public void onPageScrollStateChanged(int state) {
+
+         }
+     }
     @Override
     public void initdata() {
         requestAsyncTask(REQUEST_INIT_DATA);
@@ -131,6 +192,8 @@ public class HomeFragment extends BaseFragment {
        });
     }
 
-
-
+    @Override
+    public void onDestroy() {
+        handler.removeMessages(SWITCHBANNER);
+    }
 }

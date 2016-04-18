@@ -35,7 +35,7 @@ public class BannerAdapter extends PagerAdapter{
 
     @Override
     public int getCount() {
-        return imageUrls.size();
+        return imageUrls.size()*1000*50;
     }
 
     @Override
@@ -49,6 +49,7 @@ public class BannerAdapter extends PagerAdapter{
 
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
+        position = position% imageUrls.size();
         ImageView imageView = picViews.get(position);
         String url = Urls.IMAGE + "?name="+imageUrls.get(position);
         LogUtil.e(this,url);
