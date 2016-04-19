@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.nineoldandroids.animation.ValueAnimator;
 import com.snow.night.googleemarket.R;
 import com.snow.night.googleemarket.bean.AppDetailBean;
 import com.snow.night.googleemarket.net.Urls;
@@ -46,7 +47,7 @@ public class AppDetailsActivity extends ActionBarActivity {
     private TextView[] textViews;
     private LinearLayout llSafeImageviews;
     private LinearLayout llSafeContent;
-
+    private  ValueAnimator animator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,8 +87,8 @@ public class AppDetailsActivity extends ActionBarActivity {
         llSafeContent.getLayoutParams().height =0;
         llSafeContent.requestLayout();
         for (int i =0; i<imageViews.length; i++){
-            imageViews[i].setVisibility(View.INVISIBLE);
-            textViews[i].setVisibility(View.INVISIBLE);
+            imageViews[i].setVisibility(View.GONE);
+            textViews[i].setVisibility(View.GONE);
         }
     }
 
@@ -99,14 +100,26 @@ public class AppDetailsActivity extends ActionBarActivity {
         llSafeImageviews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                llSafeContent.measure(0,0);
+
                 if(contentIsOpen){
                     //将content页面关闭
-
+                    animator = ValueAnimator.ofInt(llSafeContent.getMeasuredHeight(),0 );
                 }else{
                     //将content页面打开
-
-
+                    animator = ValueAnimator.ofInt(0,llSafeContent.getMeasuredHeight() );
                 }
+                animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                        int heightvalue = (int) valueAnimator.getAnimatedValue();
+                        //为llSafeContent的高赋值
+                        llSafeContent.getLayoutParams().height = heightvalue;
+                        llSafeContent.requestLayout();
+                    }
+                });
+               animator.setDuration(350);
+                animator.start();
                 contentIsOpen = !contentIsOpen;
             }
         });
