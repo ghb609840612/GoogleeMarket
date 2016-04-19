@@ -67,16 +67,16 @@ public abstract class BaseFragment extends Fragment {
      * @param requestType
      */
     public void requestAsyncTask(final int requestType){
-            new AsyncTask<Void,Void,Object>(){
-                @Override
-                protected Object doInBackground(Void... params) {
-                    return BaseFragment.this.doInBackground(requestType);
-                }
-                @Override
-                protected void onPostExecute(Object o) {
-                   BaseFragment.this.onPostExecute(requestType,o);
-                }
-            }.execute();
+        new AsyncTask<Void,Void,Object>(){
+            @Override
+            protected Object doInBackground(Void... params) {
+                return BaseFragment.this.doInBackground(requestType);
+            }
+            @Override
+            protected void onPostExecute(Object o) {
+                BaseFragment.this.onPostExecute(requestType,o);
+            }
+        }.execute();
     }
 
     /**

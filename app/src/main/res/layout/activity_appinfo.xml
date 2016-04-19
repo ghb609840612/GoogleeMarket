@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <!--第一大块内容-->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@color/appdetailbg"
+            android:orientation="vertical">
+            <!--第一小块内容-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/list_item_bg_normal"
+                android:orientation="vertical"
+                android:padding="6dp">
+                <!--第一行内容-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="6dp">
+
+                    <ImageView
+                        android:id="@+id/iv_appdetail_icon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="6dp"
+                        android:src="@drawable/ic_default" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_appdetail_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="应用名称"
+                            android:textColor="@color/gray"
+                            android:textSize="18sp" />
+
+                        <RatingBar
+                            android:id="@+id/rb_appdetail_rating"
+                            android:layout_width="wrap_content"
+                            android:layout_height="20dp"
+                            android:isIndicator="true"
+                            android:numStars="5"
+                            android:progressDrawable="@drawable/ratingbar_full"
+                            android:rating="4" />
+
+                    </LinearLayout>
+                </LinearLayout>
+                <!--第二行内容-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp">
+
+                    <TextView
+                        android:id="@+id/tv_appdetail_number"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="20万+"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_appdetail_version"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4.1.9"
+                        android:textSize="15sp" />
+                </LinearLayout>
+                <!--第三行内容-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp">
+
+                    <TextView
+                        android:id="@+id/tv_appdetail_date"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2015-5-4"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_appdetail_size"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="4.1MB"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </LinearLayout>
+            <!--第二小块内容-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/list_item_bg_normal"
+                android:orientation="vertical"
+                android:paddingBottom="6dp"
+                android:paddingLeft="6dp"
+                android:paddingRight="6dp"
+                android:paddingTop="10dp">
+                <!--第一行图片-->
+                <LinearLayout
+                    android:id="@+id/ll_safe_imageviews"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="3dp"
+                    android:paddingRight="3dp"
+                    android:paddingTop="6dp">
+
+                    <ImageView
+                        android:id="@+id/iv_safe_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/safe_icon0" />
+
+                    <ImageView
+                        android:id="@+id/iv_safe_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/safe_icon0" />
+
+                    <ImageView
+                        android:id="@+id/iv_safe_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/safe_icon0" />
+
+                    <ImageView
+                        android:id="@+id/iv_safe_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/safe_icon0" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:layout_weight="1" />
+
+                    <ImageView
+                        android:id="@+id/iv_safe_arrow"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/arrow_down" />
+                </LinearLayout>
+                <!--第二行 内容描述-->
+                <LinearLayout
+                    android:id="@+id/ll_safe_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="6dp">
+
+                    <TextView
+                        android:id="@+id/tv_safe_1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/safe_des_icon"
+                        android:drawablePadding="3dp"
+                        android:gravity="center_vertical"
+                        android:text="safe"
+                        android:textSize="15sp"
+                        android:singleLine="true"/>
+
+                    <TextView
+                        android:id="@+id/tv_safe_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/safe_des_icon"
+                        android:drawablePadding="3dp"
+                        android:gravity="center_vertical"
+                        android:text="safe"
+                        android:singleLine="true"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_safe_3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/safe_des_icon"
+                        android:drawablePadding="3dp"
+                        android:singleLine="true"
+                        android:gravity="center_vertical"
+                        android:text="safe"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/tv_safe_4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableLeft="@drawable/safe_des_icon"
+                        android:drawablePadding="3dp"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="safe"
+                        android:textSize="15sp" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!--第二大块下载页面内容-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="@color/colorPrimary">
+
+    </LinearLayout>
+</LinearLayout>

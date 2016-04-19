@@ -1,14 +1,17 @@
 package com.snow.night.googleemarket.fragment;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.os.SystemClock;
 import android.support.v4.view.ViewPager;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.snow.night.googleemarket.MyApplication;
 import com.snow.night.googleemarket.R;
+import com.snow.night.googleemarket.activity.AppDetailsActivity;
 import com.snow.night.googleemarket.adapter.BannerAdapterSelf;
 import com.snow.night.googleemarket.adapter.HomeListAdapter;
 import com.snow.night.googleemarket.base.BaseFragment;
@@ -16,6 +19,7 @@ import com.snow.night.googleemarket.bean.HomeBean;
 import com.snow.night.googleemarket.net.Urls;
 import com.snow.night.googleemarket.utils.CommonUtils;
 import com.snow.night.googleemarket.utils.JsonUtil;
+import com.snow.night.googleemarket.utils.Keys;
 import com.snow.night.googleemarket.utils.LogUtil;
 import com.snow.night.googleemarket.utils.NetUtil;
 import com.snow.night.googleemarket.view.LoadMoreListView;
@@ -188,11 +192,25 @@ public class HomeFragment extends BaseFragment {
            public void onRetry() {
                requestAsyncTask(REQUEST_LOADING_DATA);
            }
+
        });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                HomeBean.Appinfo appinfo = (HomeBean.Appinfo) parent.getItemAtPosition(position);
+                String packageName = appinfo.getPackageName();
+
+                Intent intent = new Intent(MyApplication.getContext(),AppDetailsActivity.class);
+                intent.putExtra(Keys.PACKAGE_NAME,packageName);
+                startActivity(intent);
+
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
+        super.onDestroy();
         handler.removeMessages(SWITCHBANNER);
     }
 }
