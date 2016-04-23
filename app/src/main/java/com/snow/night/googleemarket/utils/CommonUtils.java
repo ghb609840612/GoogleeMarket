@@ -2,6 +2,7 @@ package com.snow.night.googleemarket.utils;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +57,12 @@ public class CommonUtils {
         // float -> int  1.1 1  1.6 1
         //				 1.6 1  2.1 2
         return (int) (px / density + 0.5f);
+    }
+    /**
+     *   通过Drawable资源id获取Drawable对象
+     */
+    public static Drawable getDrawable(int id){
+        return getContext().getResources().getDrawable(id);
     }
 
     /**

@@ -3,11 +3,11 @@ package com.snow.night.googleemarket.activity;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -16,6 +16,8 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.snow.night.googleemarket.R;
 import com.snow.night.googleemarket.bean.AppDetailBean;
+import com.snow.night.googleemarket.bean.DownLoadInfo;
+import com.snow.night.googleemarket.manager.DownLoadManager;
 import com.snow.night.googleemarket.net.Urls;
 import com.snow.night.googleemarket.utils.JsonUtil;
 import com.snow.night.googleemarket.utils.Keys;
@@ -52,7 +54,9 @@ public class AppDetailsActivity extends Activity {
     private LinearLayout llAppdetail;
     private ScrollView svAppdetailInfo;
     private TextView tvAppdetaiDesc;
-    private AppDetailBean appdetailInfo;
+    private AppDetailBean appinfodownloadself;
+    private ProgressBar pbDownLoad;
+    private TextView tvDownLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,8 @@ public class AppDetailsActivity extends Activity {
         appdetailState.setContentView(R.layout.activity_appinfo);
         setContentView( appdetailState);
         initview();
+
+
         initdata();
         initlistener();
     }
@@ -108,6 +114,11 @@ public class AppDetailsActivity extends Activity {
         ivDescArrow = (ImageView) findViewById(R.id.iv_desc_arrow);
         llAppdetail = (LinearLayout) findViewById(R.id.ll_appdetail_desc);
         svAppdetailInfo = (ScrollView) findViewById(R.id.sv_appdetailinfo);
+        //下载信息
+        pbDownLoad = (ProgressBar) findViewById(R.id.pb_download);
+        tvDownLoad = (TextView) findViewById(R.id.tv_download);
+
+
     }
 
     private void initdata() {
@@ -143,13 +154,24 @@ public class AppDetailsActivity extends Activity {
                 contentIsOpen = !contentIsOpen;
             }
         });
+        //详情描述页面的点击事件
         llAppdetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 tvDescIsShow();
             }
         });
+        //下载模块pb的点击事件
+
     }
+
+    /**
+     * 注册观察者的方法
+     */
+
+
+
+
     private  boolean tvDescIsshow = false;
     private void tvDescIsShow() {
         int alllinesheight = getAlllinesheight();
@@ -175,8 +197,6 @@ public class AppDetailsActivity extends Activity {
                 int animatedValue = (int) val.getAnimatedValue();
                 tvAppdetaiDesc.getLayoutParams().height = animatedValue;
                 tvAppdetaiDesc.requestLayout();
-
-
 
             }
         });
@@ -221,7 +241,6 @@ public class AppDetailsActivity extends Activity {
         int measureSpec = View.MeasureSpec.makeMeasureSpec(tvAppdetaiDesc.getWidth(), View.MeasureSpec.EXACTLY);
 //        textView.measure(0,0);
         textView.measure(measureSpec,0);
-        LogUtil.e(this,tvAppdetaiDesc.getText());
         return   textView.getMeasuredHeight();
     }
 
@@ -245,34 +264,111 @@ public class AppDetailsActivity extends Activity {
     private void onPostExecute(int requestType, Object result) {
 
             if(requestType ==REQUESTAPPDETAIL && result !=null){
-                appdetailInfo = JsonUtil.json2Bean((String) result, AppDetailBean.class);
+                AppDetailBean appDetailBean = JsonUtil.json2Bean((String) result, AppDetailBean.class);
+
                 appdetailState.showContentview();
-                showDataFirst(appdetailInfo);
-                showDataSecond(appdetailInfo.safe);
-                showDataThird(appdetailInfo.screen);
-                showDataFourth(appdetailInfo);
+                showDataFirst(appDetailBean);
+                showDataSecond(appDetailBean.safe);
+                showDataThird(appDetailBean.screen);
+                showDataFourth(appDetailBean);
+                downloadapp(appDetailBean);
+//                setdownloadAPP(appDetailBean);
+                DownLoadInfo loadInfo = DownLoadManager.getInstance().getdownloadinfo(appDetailBean);
+                if(loadInfo!=null){
+                    processState(loadInfo);
+                }
             }else if(result== null)
             {
                 appdetailState.showFail();
             }
+
     }
 
+    private void downloadapp(final AppDetailBean appinfodownload) {
+        pbDownLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                DownLoadManager downLoadManager = DownLoadManager.getInstance();
+                DownLoadInfo downLoadInfo = downLoadManager.getdownloadinfo(appinfodownload);
+                if(downLoadInfo ==null){
+                    downLoadManager.download(appinfodownload);
+                }else{
+                    if(downLoadInfo.getState() == DownLoadManager.DOWNLOAD_STATE_DOWNLOADING ||
+                            downLoadInfo.getState() == DownLoadManager.DOWNLOAD_STATE_WAITING ){
+                        downLoadManager.pause(appinfodownload);
+                    }else if(downLoadInfo.getState() == DownLoadManager.DOWNLOAD_STATE_PAUSE ||
+                            downLoadInfo.getState() == DownLoadManager.DOWNLOAD_STATE_ERROR){
+                        downLoadManager.download(appinfodownload);
+                    }else if(downLoadInfo.getState() == DownLoadManager.DOWNLOAD_STATE_SUCCESS){
+                        downLoadManager.install(appinfodownload);
+                    }
+                }
+            }
+        } );
+        registDownloadObserver(appinfodownload);
+    }
 
-    private void showDataFirst(AppDetailBean appdetailInfo) {
-        if(appdetailInfo ==null )
+    public void registDownloadObserver(final AppDetailBean appinfodownload){
+        DownLoadManager.getInstance().registObserver(new DownLoadManager.DownLoadObserver() {
+            @Override
+            public void onDownLoadinfoChange(DownLoadInfo info) {
+                if(!info.getId().equals(appinfodownload.getId()))
+                    return;
+                processState(info);
+
+            }
+        });
+    }
+
+    /**
+     * 下载按钮点击事件对应的处理
+     * @param info
+     */
+    private void processState(DownLoadInfo info) {
+        if(info ==null){return;}
+        int progress = (int) (info.getCurrentposition()*100f/info.getSize());
+        switch (info.getState()){
+            case DownLoadManager.DOWNLOAD_STATE_DOWNLOADING:
+                pbDownLoad.setProgress(progress);
+                tvDownLoad.setText(progress+"%");
+                tvDownLoad.setBackgroundResource(0);
+
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_PAUSE:
+                tvDownLoad.setText("继续下载");
+                pbDownLoad.setProgress(progress);
+                tvDownLoad.setBackgroundResource(0);
+
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_ERROR:
+                tvDownLoad.setText("重新下载");
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_SUCCESS:
+                tvDownLoad.setText("安装");
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_WAITING:
+                tvDownLoad.setText("等待");
+                pbDownLoad.setProgress(progress);
+                tvDownLoad.setBackgroundResource(0);
+                break;
+        }
+    }
+
+    private void showDataFirst(AppDetailBean appdetailInfoselef) {
+        if(appdetailInfoselef ==null )
         {
             return;
         }
-        String url = Urls.IMAGE+"?name=" +appdetailInfo.getIconUrl();
+        String url = Urls.IMAGE+"?name=" +appdetailInfoselef.getIconUrl();
         x.image().bind(ivAppdetaiIcon,url);
-        tvAppdetailName.setText(appdetailInfo.getName());
-        tvAppdetailVersion.setText(appdetailInfo.getVersion());
-        tvAppdetailDate.setText(appdetailInfo.getDate());
-        String size = android.text.format.Formatter.formatFileSize(this, appdetailInfo.getSize());
-        tvAppdetailNumber.setText(appdetailInfo.getDownloadNum());
+        tvAppdetailName.setText(appdetailInfoselef.getName());
+        tvAppdetailVersion.setText(appdetailInfoselef.getVersion());
+        tvAppdetailDate.setText(appdetailInfoselef.getDate());
+        String size = android.text.format.Formatter.formatFileSize(this, appdetailInfoselef.getSize());
+        tvAppdetailNumber.setText(appdetailInfoselef.getDownloadNum());
         tvAppdetailSize .setText(size);
-        rating.setRating(appdetailInfo.getStars());
+        rating.setRating(appdetailInfoselef.getStars());
     }
     private void showDataSecond(ArrayList<AppDetailBean.SafeInfo> safes) {
         if(safes == null || safes.isEmpty()){
@@ -309,4 +405,37 @@ public class AppDetailsActivity extends Activity {
         String getjson = NetUtil.getjson(Urls.DETAIL, params);
         return getjson;
     }
+
+    /**
+     * 第二次进入界面时对下载模块对应组件的初始化
+     * @param loadInfo
+     */
+    private void processStateSelf(DownLoadInfo loadInfo) {
+        if(loadInfo ==null){return;}
+        int progress = (int) (loadInfo.getCurrentposition()*100f/loadInfo.getSize());
+        switch (loadInfo.getState()){
+            case DownLoadManager.DOWNLOAD_STATE_DOWNLOADING:
+                pbDownLoad.setProgress(progress);
+
+                tvDownLoad.setBackgroundResource(0);
+
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_PAUSE:
+                tvDownLoad.setText("继续下载");
+                tvDownLoad.setBackgroundResource(0);
+
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_ERROR:
+                tvDownLoad.setText("重新下载");
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_SUCCESS:
+                tvDownLoad.setText("安装");
+                break;
+            case DownLoadManager.DOWNLOAD_STATE_WAITING:
+                tvDownLoad.setText("等待");
+                tvDownLoad.setBackgroundResource(0);
+                break;
+        }
+    }
+
 }

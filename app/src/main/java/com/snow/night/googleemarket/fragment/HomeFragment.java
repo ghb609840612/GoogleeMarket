@@ -127,7 +127,7 @@ public class HomeFragment extends BaseFragment {
 //                params.put("index",homeListAdapter.getData().size()+"");  //有时空指针
 //                int index =homeListAdapter.getData().size();
 //                String indexString = String.valueOf(index);
-                if(homeListAdapter.getData().size()==0){
+                if(homeListAdapter.getData()==null){
                     params.put("index","0");
                 }else{
                     params.put("index",homeListAdapter.getData().size()+"");

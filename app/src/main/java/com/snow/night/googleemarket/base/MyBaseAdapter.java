@@ -40,22 +40,6 @@ public abstract  class MyBaseAdapter<T> extends BaseAdapter{
         return position;
     }
 
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//
-// if(convertView == null)
-//        {
-//            convertView = View.inflate(parent.getContext(),
-//                    android.R.layout.simple_expandable_list_item_1,null);
-//            viewHolder = new ViewHolder();
-//            viewHolder.tv = (TextView) convertView.findViewById(android.R.id.text1);
-//            convertView.setTag(viewHolder);
-//        }else{
-//            viewHolder = (ViewHolder) convertView.getTag();
-//        }
-//        String data =datas.get(position);
-//        viewHolder.tv.setText(data);
-//        return convertView;
-//    }
     public View getView(int position, View convertView, ViewGroup parent) {
        Object viewHolder;
         if(convertView == null)
