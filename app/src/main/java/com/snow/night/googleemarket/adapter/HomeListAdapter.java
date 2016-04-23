@@ -69,7 +69,7 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
         progressArc.setBackgroundResource(R.drawable.ic_download);
         progressArc.setProgressColor(R.color.selfblue);
         holder.fl_download_logo.addView(progressArc);
-
+        holder.pa_progressArcSelf = progressArc;
         holder.tv_title.setText(data.getName());
         holder.tv_size.setText(android.text.format.Formatter.formatFileSize(context,data.getSize()));
         holder.tv_desc.setText(data.getDes());
@@ -81,7 +81,6 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
             }
         });
         registDownloadObserver(data,holder);
-
     }
 
     /**
@@ -120,7 +119,7 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
         RatingBar rb_rating;
         LinearLayout ll_download;
         FrameLayout fl_download_logo;
-
+        ProgressArc  pa_progressArcSelf;
     }
 
     /**
@@ -134,7 +133,6 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
                     //根据状态，更新界面
                     processState(info,holder);
                 }
-
 
             }
         });
@@ -153,35 +151,35 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
             case DownLoadManager.DOWNLOAD_STATE_DOWNLOADING:
                 //显示进度，显示百分比
                 //设置ProgressArc的下载style
-                progressArc.setStyle(ProgressArc.PROGRESS_STYLE_DOWNLOADING);
-                progressArc.setProgress(progress, true);
-                progressArc.setBackgroundResource(R.drawable.ic_pause);
+                holder.pa_progressArcSelf.setStyle(ProgressArc.PROGRESS_STYLE_DOWNLOADING);
+                holder.pa_progressArcSelf.setProgress(progress, true);
+                holder.pa_progressArcSelf.setBackgroundResource(R.drawable.ic_pause);
                 holder.tv_progress.setText(progressInt+"%");
                 break;
             case DownLoadManager.DOWNLOAD_STATE_ERROR:
                 //文字该为重新下载
-                progressArc.setStyle(ProgressArc.PROGRESS_STYLE_NO_PROGRESS);
-                progressArc.setBackgroundResource(R.drawable.ic_redownload);
+                holder.pa_progressArcSelf.setStyle(ProgressArc.PROGRESS_STYLE_NO_PROGRESS);
+                holder.pa_progressArcSelf.setBackgroundResource(R.drawable.ic_redownload);
                 holder.tv_progress.setText("重下");
                 break;
             case DownLoadManager.DOWNLOAD_STATE_PAUSE:
                 //文字改为 继续下载
-                progressArc.setStyle(ProgressArc.PROGRESS_STYLE_NO_PROGRESS);
-                progressArc.setBackgroundResource(R.drawable.ic_resume);
+                holder.pa_progressArcSelf.setStyle(ProgressArc.PROGRESS_STYLE_NO_PROGRESS);
+                holder.pa_progressArcSelf.setBackgroundResource(R.drawable.ic_resume);
                 holder.tv_progress.setText("继续");
                 break;
             case DownLoadManager.DOWNLOAD_STATE_SUCCESS:
                 //文字改为 安装
-                progressArc.setStyle(ProgressArc.PROGRESS_STYLE_NO_PROGRESS);
-                progressArc.setBackgroundResource(R.drawable.ic_install);
+                holder.pa_progressArcSelf.setStyle(ProgressArc.PROGRESS_STYLE_NO_PROGRESS);
+                holder.pa_progressArcSelf.setBackgroundResource(R.drawable.ic_install);
                 holder.tv_progress.setText("安装");
                 break;
             case DownLoadManager.DOWNLOAD_STATE_WAITING:
                 //文字改为 等待
                 holder.tv_progress.setText("等待");
-                progressArc.setStyle(ProgressArc.PROGRESS_STYLE_DOWNLOADING);
-                progressArc.setProgress(progress, true);
-                progressArc.setBackgroundResource(R.drawable.ic_download);
+                holder.pa_progressArcSelf.setStyle(ProgressArc.PROGRESS_STYLE_DOWNLOADING);
+                holder.pa_progressArcSelf.setProgress(progress, true);
+                holder.pa_progressArcSelf.setBackgroundResource(R.drawable.ic_download);
                 break;
         }
     }
