@@ -171,7 +171,6 @@ public class DownLoadManager {
                 downLoadInfo.setCurrentposition(0);
                 String url = Urls.DOWNLOAD +"?name=" +downLoadInfo.getDownURL();
                 httpResult =  HttpHelper.download(url);
-
             }else {
                 //断点续传
                 String url = Urls.DOWNLOAD +"?name=" +downLoadInfo.getDownURL()
@@ -193,14 +192,12 @@ public class DownLoadManager {
                         downLoadInfo.setCurrentposition(len +downLoadInfo.getCurrentposition());
                         notifyObserver(downLoadInfo);
                     }
-
                 } catch (Exception e) {
                     processError(file,downLoadInfo);
                 }finally {
                     IOUtils.close(inputStream);
                     IOUtils.close(fileOutputStream);
                 }
-
             }else{
                 processError(file,downLoadInfo);
             }
@@ -222,7 +219,6 @@ public class DownLoadManager {
         downLoadInfo.setCurrentposition(0);
         downLoadInfo.setState(DOWNLOAD_STATE_ERROR);
     }
-
 
     public interface  DownLoadObserver{
         public void onDownLoadinfoChange(DownLoadInfo info);

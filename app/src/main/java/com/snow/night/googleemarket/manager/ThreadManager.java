@@ -28,7 +28,7 @@ public class ThreadManager {
                 maximumPoolSize,
                 10,
                 TimeUnit.SECONDS,
-                new LinkedBlockingDeque(5),
+                new LinkedBlockingDeque(),
                 Executors.defaultThreadFactory(),
                 new ThreadPoolExecutor.AbortPolicy());
     };

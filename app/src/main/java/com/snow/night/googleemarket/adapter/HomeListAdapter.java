@@ -55,6 +55,12 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
         viewHolder.ll_download = (LinearLayout) convertView.findViewById(R.id.ll_homefragment_item_download);
         viewHolder.fl_download_logo= (FrameLayout) convertView.findViewById(R.id.fl_download_logo);
         viewHolder.tv_progress = (TextView) convertView.findViewById(R.id.tv_download_progress);
+        progressArc = new ProgressArc(MyApplication.getContext());
+        progressArc.setArcDiameter(CommonUtils.dip2px(27));
+        progressArc.setBackgroundResource(R.drawable.ic_download);
+        progressArc.setProgressColor(R.color.selfblue);
+        viewHolder.fl_download_logo.addView(progressArc);
+        viewHolder.pa_progressArcSelf = progressArc;
         return viewHolder;
     }
 
@@ -64,12 +70,6 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
         Context context = ((ViewHolder) viewHolder).tv_title.getContext();
         String url = Urls.IMAGE + "?name="+data.getIconUrl();
         x.image().bind(((ViewHolder) viewHolder).iv_icon,url);
-        progressArc = new ProgressArc(MyApplication.getContext());
-        progressArc.setArcDiameter(CommonUtils.dip2px(27));
-        progressArc.setBackgroundResource(R.drawable.ic_download);
-        progressArc.setProgressColor(R.color.selfblue);
-        holder.fl_download_logo.addView(progressArc);
-        holder.pa_progressArcSelf = progressArc;
         holder.tv_title.setText(data.getName());
         holder.tv_size.setText(android.text.format.Formatter.formatFileSize(context,data.getSize()));
         holder.tv_desc.setText(data.getDes());
@@ -80,7 +80,7 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
                 lldownloadclick(data);
             }
         });
-        registDownloadObserver(data,holder);
+        registDownloadObserver(data,holder,position);
     }
 
     /**
@@ -125,7 +125,7 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
     /**
      * 注册观察者
      */
-    public void registDownloadObserver(final HomeBean.Appinfo downloaddata, final ViewHolder holder) {
+    public void registDownloadObserver(final HomeBean.Appinfo downloaddata, final ViewHolder holder,int position) {
         DownLoadManager.getInstance().registObserver(new DownLoadManager.DownLoadObserver() {
             @Override
             public void onDownLoadinfoChange(DownLoadInfo info) {
@@ -133,7 +133,6 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
                     //根据状态，更新界面
                     processState(info,holder);
                 }
-
             }
         });
     }
@@ -151,6 +150,7 @@ public class HomeListAdapter extends MyBaseAdapter<HomeBean.Appinfo>{
             case DownLoadManager.DOWNLOAD_STATE_DOWNLOADING:
                 //显示进度，显示百分比
                 //设置ProgressArc的下载style
+
                 holder.pa_progressArcSelf.setStyle(ProgressArc.PROGRESS_STYLE_DOWNLOADING);
                 holder.pa_progressArcSelf.setProgress(progress, true);
                 holder.pa_progressArcSelf.setBackgroundResource(R.drawable.ic_pause);

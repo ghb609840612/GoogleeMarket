@@ -43,7 +43,7 @@ public abstract class BaseFragment extends Fragment {
             rootview.setContentView(getContentViewById());
         }
         initview();
-//        initdata();
+        initdata();
         initlistener();
     return rootview;
 }
